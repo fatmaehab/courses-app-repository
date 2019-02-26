@@ -17,8 +17,8 @@ public class CourseService {
 	@Autowired
 	private CourseRepository repository;
 	
-	public void addUpdateCourse(Course course) {
-		repository.save(course);
+	public Course addUpdateCourse(Course course) {
+		return repository.save(course);
 	}
 	
 	public void deleteCourse(Long id) {

@@ -21,7 +21,7 @@ public class LoggingAspect {
 		logger.info(joinPoint.toString());
 	}
 
-	@AfterThrowing(value="execution(* com.project.services.*.*(..))",throwing="ex")
+	@AfterThrowing(value="execution(* com.project.*.*(..))",throwing="ex")
 	public void aspectAfterThrowing(JoinPoint joinPoint, Exception ex) {
 		logger.info("Exception in " + joinPoint.getSignature().getName() +" with args " +  joinPoint.getArgs());
 		logger.info(ex.getMessage() + ex.getStackTrace());

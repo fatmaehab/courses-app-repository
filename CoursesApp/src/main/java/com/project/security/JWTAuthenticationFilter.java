@@ -1,7 +1,8 @@
 package com.project.security;
 
 import com.auth0.jwt.JWT;
-import com.project.entities.ApplicationUser;
+
+import org.springframework.security.core.userdetails.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,8 @@ import static com.project.security.SecurityConstants.EXPIRATION_TIME;
 import static com.project.security.SecurityConstants.HEADER_STRING;
 import static com.project.security.SecurityConstants.SECRET;
 import static com.project.security.SecurityConstants.TOKEN_PREFIX;
+
+import com.project.entities.ApplicationUser;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -56,9 +59,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication auth) throws IOException, ServletException {
 
         String token = JWT.create()
-                .withSubject(((ApplicationUser) auth.getPrincipal()).getUsername())
+                .withSubject(((User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
+        
+        res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

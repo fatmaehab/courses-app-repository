@@ -21,22 +21,22 @@ public class AppTest {
 //	}
 	
 
-	static Logger logger = Logger.getLogger(CourseService.class.getName());
-	
-	@Autowired
-	private CourseService service;
-
-
-	@Test
-	public void invokeAOPStuff() {
-		logger.info("Courses list size: " + service.getCourses().size());
-
-	}
-	
-	@Test
-	public void testfindNonExistingCourse() {
-		logger.info("Courses details: " + service.findCourse(new Long(1)));
-
-	}
+//	static Logger logger = Logger.getLogger(CourseService.class.getName());
+//	
+//	@Autowired
+//	private CourseService service;
+//
+//
+//	@Test
+//	public void invokeAOPStuff() {
+//		logger.info("Courses list size: " + service.getCourses().size());
+//
+//	}
+//	
+//	@Test
+//	public void testfindNonExistingCourse() {
+//		logger.info("Courses details: " + service.findCourse(new Long(1)));
+//
+//	}
 
 }

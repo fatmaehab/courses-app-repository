@@ -38,49 +38,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().
-                authorizeRequests()
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL, SIGN_IN_URL).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
-//        http.addFilterBefore(new JWTAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-    }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.cors().and().csrf().disable().authorizeRequests()
-//                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-//                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-//                // this disables session creation on Spring Security
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//    }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//    	final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//    	source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//    	return source;
-//    }
     
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
     	final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     	CorsConfiguration config = new CorsConfiguration();
-//    	config.applyPermitDefaultValues();
     	config.addAllowedOrigin("*");
         config.addExposedHeader("Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
                 "Content-Type, Access-Control-Request-Method, Custom-Filter-Header");
@@ -93,5 +55,25 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     	source.registerCorsConfiguration("/**", config);
     	return source;
     }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable().
+                authorizeRequests()
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL, SIGN_IN_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        
+    }
+    
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    }
+    
+   
     
 }
